@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab6_danielmorales;
+package lab8_danielmorales;
 
 /**
  *
@@ -11,7 +11,7 @@ package lab6_danielmorales;
  */
 public class SerVivo {
     private String nombre;
-    private int poder;
+    private String poder;
     private String años;
     private String planetaProcedencia;
     private String raza;
@@ -19,7 +19,7 @@ public class SerVivo {
     public SerVivo() {
     }
 
-    public SerVivo(String nombre, int poder, String años, String planetaProcedencia, String raza) {
+    public SerVivo(String nombre, String poder, String años, String planetaProcedencia, String raza) {
         this.nombre = nombre;
         this.poder = poder;
         this.años = años;
@@ -35,11 +35,11 @@ public class SerVivo {
         this.nombre = nombre;
     }
 
-    public int getPoder() {
+    public String getPoder() {
         return poder;
     }
 
-    public void setPoder(int poder) {
+    public void setPoder(String poder) {
         this.poder = poder;
     }
 

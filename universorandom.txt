@@ -1,0 +1,13 @@
+Sakata Gintoki;7;28;Tierra;Humano
+Shimura Shinpachi;8;16;Tierra;Humano
+Kagura;9;14;Tierra;Humano
+Kanemaru;6;25;Tierra;Humano
+Ikesawa;7;20;Tierra;Humano
+Furuhashi;4;21;Tierra;Humano
+Hijikata Toushirou;9;27;Tierra;Humano
+Okita Sougo;8;18;Tierra;Humano
+Kondou Isao;6;28;Tierra;Humano
+Tokugawa Morimori;5;13;Tierra;Humano
+da;1;1;da;Humano
+dafds;1;1;fdsfds;Humano
+da;1;1;da;Humano

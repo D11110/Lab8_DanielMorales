@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab6_danielmorales;
+package lab8_danielmorales;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -31,6 +30,7 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
+
         initComponents();
         btn_listarrrr.setEnabled(false);
     }
@@ -76,6 +76,7 @@ public class Main extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         btn_listarrrr = new javax.swing.JButton();
+        loadingBar = new javax.swing.JProgressBar();
         jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -373,6 +374,12 @@ public class Main extends javax.swing.JFrame {
         });
         getContentPane().add(btn_listarrrr, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 209, -1, -1));
 
+        loadingBar.setBackground(new java.awt.Color(0, 0, 0));
+        loadingBar.setForeground(new java.awt.Color(255, 102, 102));
+        loadingBar.setMaximum(5);
+        loadingBar.setMinimum(1);
+        getContentPane().add(loadingBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, 170, 30));
+
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lab8_danielmorales/Shinsengumi_group.jpg"))); // NOI18N
         jLabel7.setText("jLabel7");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(-360, 0, 1040, 700));
@@ -415,13 +422,20 @@ public class Main extends javax.swing.JFrame {
 
     ArrayList<SerVivo> lista = new ArrayList();
 
+
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         jd_agregar.setVisible(true);
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         jd_agregar.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -434,26 +448,51 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
         // TODO add your handling code here:
-        String nombre = tf_nombre.getText();
-        int poder = Integer.parseInt(tf_poder.getSelectedItem().toString());
-        String age = tf_age.getValue().toString();
-        String planeta = tf_planeta.getText();
-        String raza = tf_raza.getSelectedItem().toString();
+        if (haLeido) {
+            try {
+                String nombre = tf_nombre.getText();
+                String poder = tf_poder.getSelectedItem().toString();
+                String age = tf_age.getValue().toString();
+                String planeta = tf_planeta.getText();
+                String raza = tf_raza.getSelectedItem().toString();
 
-        SerVivo sv = new SerVivo(nombre, poder, age, planeta, raza);
-        lista.add(sv);
+                SerVivo sv = new SerVivo(nombre, poder, age, planeta, raza);
+                u.iniciarUniverso(archivo.getAbsolutePath());
+                u.cargarArchivo();
+                u.getSeresVivos().clear();
+                u.getSeresVivos().add(sv);
+                u.escribirArchivoSOBRE();
 
-//        DefaultTableModel modelo = (DefaultTableModel) tabla1.getModel();
-//        Object[] newRow = {
-//            nombre,
-//            poder,
-//            age,
-//            planeta,
-//            raza
-//        };
-//        modelo.addRow(newRow);
-//        tabla1.setModel(modelo);
-//        tabla2.setModel(modelo);
+                ta_verUniversos.setText("");
+                FileReader fr = null;
+                if (archivo.isFile()) {
+                    fr = new FileReader(archivo);
+                    BufferedReader br = new BufferedReader(fr);
+                    String linea = "";
+                    while ((linea = br.readLine()) != null) {
+                        ta_verUniversos.append(linea);
+                        ta_verUniversos.append("\n");
+                    }
+
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                String nombre = tf_nombre.getText();
+                String poder = tf_poder.getSelectedItem().toString();
+                String age = tf_age.getValue().toString();
+                String planeta = tf_planeta.getText();
+                String raza = tf_raza.getSelectedItem().toString();
+
+                SerVivo sv = new SerVivo(nombre, poder, age, planeta, raza);
+                lista.add(sv);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(jd_agregar, "Ha ocurrido un error en los datos");
+            }
+        }
 
         JOptionPane.showMessageDialog(jd_agregar, "Ser vivo creado exitosamente");
 
@@ -461,6 +500,9 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseClicked
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No hay seres vivos creados, no se puede crear Universo");
         } else {
@@ -502,8 +544,10 @@ public class Main extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         try {
-            Universo u = new Universo();
             u.iniciarUniverso(archivo.getPath());
             u.cargarArchivo();
             String acum = "";
@@ -527,7 +571,6 @@ public class Main extends javax.swing.JFrame {
                     try {
                         String nuevaEdad = JOptionPane.showInputDialog("Ingrese la nueva edad:");
                         u.getSeresVivos().get(op).setAños(nuevaEdad);
-                        u.escribirArchivo();
                     } catch (Exception e) {
                     }
                     break;
@@ -546,11 +589,8 @@ public class Main extends javax.swing.JFrame {
                     u.getSeresVivos().get(op).setRaza(nuevaRaza);
                     break;
                 case 4:
-                    int nuevoPoder = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo poder:"));
-                    while (nuevoPoder < 1 || nuevoPoder > 10) {
-                        JOptionPane.showMessageDialog(null, "1-10 solamente");
-                        nuevoPoder = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo poder:"));
-                    }
+                    String nuevoPoder = JOptionPane.showInputDialog("Ingrese el nuevo poder:");
+                    
                     u.getSeresVivos().get(op).setPoder(nuevoPoder);
                     break;
                 case 5:
@@ -570,31 +610,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
         // TODO add your handling code here:
-//        if (tabla1.getSelectedRow() >= 0) {
-//            String nombre = JOptionPane.showInputDialog(jd_modificar, "Ingrese el nombre:");
-//            int poder = Integer.parseInt(JOptionPane.showInputDialog(jd_modificar, "Ingrese el poder:"));
-//            String age = JOptionPane.showInputDialog(jd_modificar, "Ingrese la edad:");
-//            String planeta = JOptionPane.showInputDialog(jd_modificar, "Ingrese el planeta:");
-//            String raza = JOptionPane.showInputDialog(jd_modificar, "Ingrese la raza:");
-//
-//            SerVivo sv = new SerVivo(nombre, poder, age, planeta, raza);
-//            DefaultTableModel modelo = (DefaultTableModel) tabla1.getModel();
-//
-//            Object[] newRow = {
-//                nombre,
-//                poder,
-//                age,
-//                planeta,
-//                raza
-//            };
-//
-//            modelo.addRow(newRow);
-//            modelo.removeRow(tabla1.getSelectedRow());
-//            tabla1.setModel(modelo);
-//            tabla2.setModel(modelo);
-//
-//            JOptionPane.showMessageDialog(jd_modificar, "Elemento modificado exitosamente");
-//        }
+
     }//GEN-LAST:event_jButton5MouseClicked
 
     private void jButton12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton12MouseClicked
@@ -606,6 +622,9 @@ public class Main extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         String aux = "";
         try {
             Universo u = new Universo();
@@ -631,22 +650,20 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
         // TODO add your handling code here:
-//        if (tabla2.getSelectedRow() >= 0) {
-//            DefaultTableModel modelo = (DefaultTableModel) tabla2.getModel();
-//            modelo.removeRow(tabla2.getSelectedRow());
-//            tabla2.setModel(modelo);
-//            tabla1.setModel(modelo);
-//
-//            JOptionPane.showMessageDialog(jd_eliminar, "Elemento eliminado exitosamente");
-//        }
+
     }//GEN-LAST:event_jButton11MouseClicked
 
     boolean abierto = false;
+    boolean haLeido = false;
 
     private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         abierto = true;
         btn_listarrrr.setEnabled(true);
+        haLeido = true;
 
         JFileChooser fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -694,6 +711,9 @@ public class Main extends javax.swing.JFrame {
 
     private void btn_listarrrrMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_listarrrrMouseClicked
         // TODO add your handling code here:
+        Hilous hi = new Hilous(loadingBar);
+        Thread he = new Thread(hi);
+        he.start();
         if (abierto) {
             jd_listarUniversos.setVisible(true);
         } else {
@@ -772,6 +792,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JDialog jd_eliminar;
     private javax.swing.JDialog jd_listarUniversos;
     private javax.swing.JDialog jd_modificar;
+    private javax.swing.JProgressBar loadingBar;
     private javax.swing.JTextArea ta_verUniversos;
     private javax.swing.JTable tabla1;
     private javax.swing.JTable tabla2;

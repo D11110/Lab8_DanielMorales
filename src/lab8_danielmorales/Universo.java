@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab6_danielmorales;
+package lab8_danielmorales;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -65,6 +65,25 @@ public class Universo {
     public String toString() {
         return "Universo{" + "nombre=" + nombre + ", seresVivos=" + seresVivos + '}';
     }
+    
+    public void escribirArchivoSOBRE() throws IOException {
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        String acum = "";
+        for (SerVivo sv : seresVivos) {
+            try {
+                fw = new FileWriter(archivo, true);
+                bw = new BufferedWriter(fw);
+                acum += sv.getNombre() + ";" + sv.getPoder() + ";" + sv.getAños() + ";" + sv.getPlanetaProcedencia() + ";" + sv.getRaza() + "\n";
+                bw.write(acum);
+
+            } catch (Exception ex) {
+            }
+        }
+        bw.flush();
+        bw.close();
+        fw.close();
+    }
 
     public void escribirArchivo() throws IOException {
         FileWriter fw = null;
@@ -74,7 +93,7 @@ public class Universo {
             try {
                 fw = new FileWriter(archivo, false);
                 bw = new BufferedWriter(fw);
-                acum += sv.getNombre() + "|" + sv.getPoder() + "|" + sv.getAños() + "|" + sv.getPlanetaProcedencia() + "|" + sv.getRaza() + "\n";
+                acum += sv.getNombre() + ";" + sv.getPoder() + ";" + sv.getAños() + ";" + sv.getPlanetaProcedencia() + ";" + sv.getRaza() + "\n";
                 bw.write(acum);
 
             } catch (Exception ex) {
@@ -98,9 +117,10 @@ public class Universo {
                     while ((lineBeingRead = br.readLine()) != null) {
                         try {
                             String parsedElement[] = lineBeingRead.split(";");
-                            SerVivo sv = new SerVivo(parsedElement[0], Integer.parseInt(parsedElement[1]), parsedElement[2], parsedElement[3], parsedElement[4]);
+                            SerVivo sv = new SerVivo(parsedElement[0], parsedElement[1], parsedElement[2], parsedElement[3], parsedElement[4]);
                             seresVivos.add(sv);
                         } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     }
                 } catch (IOException ex) {
